@@ -7,13 +7,30 @@ from .grayscale import RGB2GrayScale
 class Neon(ImageFilter):
     name = "neon"
 
-    def __init__(self, neon_strength: float = 1.5, neon_blur: float = 0.8):
+    def __init__(self, neon_strength: float = 1.5, neon_blur: float = 0.8, neon_range_edge: int = 0):
         if neon_strength < 0:
             raise ValueError("neon-strength должен быть >= 0")
         if neon_blur < 0:
             raise ValueError("neon-blur должен быть >= 0")
+        if neon_range_edge < 0:
+                    raise ValueError("neon-blur должен быть >= 0")
         self.neon_strength = float(neon_strength)
         self.neon_blur = float(neon_blur)
+        self.neon_range_edge = int(neon_range_edge)
+
+    @staticmethod
+    def _edge(image: np.ndarray, iterations: int) -> np.ndarray:
+        result = image.astype(np.float32)
+
+        for _ in range(iterations):
+            p = np.pad(result, 1, mode="edge")
+            result = np.maximum.reduce([
+                p[:-2, :-2], p[:-2, 1:-1], p[:-2, 2:],
+                p[1:-1, :-2], p[1:-1, 1:-1], p[1:-1, 2:],
+                p[2:, :-2],  p[2:, 1:-1],  p[2:, 2:],
+            ])
+
+        return result
 
     @staticmethod
     def _blur(image: np.ndarray, iterations: int) -> np.ndarray:
@@ -43,6 +60,9 @@ class Neon(ImageFilter):
         magnitude = np.sqrt(gx ** 2 + gy ** 2)
         edges = np.clip(magnitude / 255.0, 0.0, 1.0)
 
+        blur_edges = edges
+        blur_edges = self._edge(edges, self.neon_range_edge)
+
         # Два слоя свечения.
         # neon_blur - ширина ореола.
         soft_iterations = max(0, round(4 * self.neon_blur))
@@ -53,7 +73,7 @@ class Neon(ImageFilter):
 
         # neon_strength - яркость свечения.
         glow = self.neon_strength * (
-            edges * 70.0
+            blur_edges * 70.0
             + soft_glow * 130.0
             + wide_glow * 180.0
         )

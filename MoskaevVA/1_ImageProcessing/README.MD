@@ -102,7 +102,7 @@
     python main.py -i input.png -o out/scratches_max.png -f scratches --n-scratches 40 --noise-sigma 25 --dust 0.02 --vertical-bias 0.5 --texture-strength 0.7
 
     # neon
-    python main.py -i input.png -o out.png -f neon --neon-strength 8.5 --neon-blur 19.8
+    python main.py -i input.png -o out.png -f neon --neon-strength 12.5 --neon-blur 28.8 --neon-range-edge 1
 ---
 
 # Математическое описание алгоритмов

@@ -59,6 +59,7 @@ def cli_argument_parser() -> argparse.Namespace:
     # neon
     p.add_argument("--neon-strength", type=float, default=1.5)
     p.add_argument("--neon-blur", type=float, default=0.8)
+    p.add_argument("--neon-range-edge", type=int, default=0)
 
     return p.parse_args()
 
@@ -95,7 +96,7 @@ def build_filter(name: str, a: argparse.Namespace) -> ImageFilter:
     if name == "neon":
         return ImageFilter.get_filter("neon",
                                       neon_strength=a.neon_strength,
-                                      neon_blur=a.neon_blur)
+                                      neon_blur=a.neon_blur, neon_range_edge=a.neon_range_edge)
     raise ValueError("unknown filter: " + name)
 
 
