@@ -1,5 +1,10 @@
 # Практическая работа №1. Обработка изображений
 
+# Источники текстур для scratches:
+# https://storage.googleapis.com/gcpqgeguazout/overlay-background-particles.html?utm_medium=organic&utm_source=yandexsmartcamera 
+# https://ca.pinterest.com/pin/tumblr--771874823605830650/?utm_medium=organic&utm_source=yandexsmartcamera 
+# https://stock.adobe.com/ru/images/white-scratches-with-scuffs-isolated-on-black/317462858?utm_medium=organic&utm_source=yandexsmartcamera
+
 ## Установка и запуск
 
     python -m venv .venv
